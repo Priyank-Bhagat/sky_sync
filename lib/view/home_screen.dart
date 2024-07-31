@@ -42,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: device.height);
             } else if (state is WeatherLoadedState) {
               WeatherType weatherConditon = getWeatherCondition(
-                  state.weatherModel.current!.condition!.code as int);
+                  state.weatherModel.current!.condition!.code as int,
+                  state.weatherModel.current!.isDay as int);
 
               return WeatherBg(
                   weatherType: weatherConditon,
@@ -69,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     );
                   } else if (state is WeatherLoadFailState) {
-                    return Container(
-                      child: Text('Failedddddd'),
-                    );
+                    return Text('Failedddddd');
                   } else if (state is WeatherLoadedState) {
                     String formatDate(String dateTimeStr) {
                       DateTime dateTime = DateTime.parse(dateTimeStr);
@@ -125,18 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // const Icon(
-                              //   Icons.cloud,
-                              //   size: 60,
-                              //   color: Colors.red,
-                              // ),
                               Image.network(
                                 'https://${state.weatherModel.current!.condition!.icon.toString().substring(2)}',
-                                height: 80,
-                                fit: BoxFit.fitHeight,
+                                height: 100,
+                                width: 120,
+                                fit: BoxFit.contain,
                               ),
                               const SizedBox(
-                                width: 20,
+                                width: 10,
                               ),
                               Text(
                                 '${state.weatherModel.current!.tempC} °',
@@ -183,34 +178,38 @@ class _HomeScreenState extends State<HomeScreen> {
                                     BorderRadius.all(Radius.circular(20))),
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
-                              itemCount: 10,
+                              itemCount: state.weatherModel.forecast!
+                                  .forecastday![0].hour!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return const Padding(
-                                  padding: EdgeInsets.only(
+                                return Padding(
+                                  padding: const EdgeInsets.only(
                                       top: 32,
                                       left: 14.0,
                                       right: 14.0,
-                                      bottom: 14.0),
+                                      bottom: 10.0),
                                   child: Column(
                                     children: [
                                       Text(
-                                        '00:00',
-                                        style: TextStyle(
+                                        state.weatherModel.forecast!
+                                            .forecastday![0].hour![index].time!
+                                            .substring(11),
+                                        style: const TextStyle(
                                             fontSize: 18, color: Colors.white),
                                       ),
-                                      SizedBox(
-                                        height: 10,
+                                      const SizedBox(
+                                        height: 5,
                                       ),
-                                      Icon(
-                                        Icons.cloud,
-                                        size: 22,
-                                        color: Colors.red,
+                                      Image.network(
+                                        'https://${state.weatherModel.forecast!.forecastday?[0].hour?[index].condition!.icon!.substring(2)}',
+                                        height: 50,
+                                        width: 70,
+                                        fit: BoxFit.contain,
                                       ),
                                       SizedBox(
-                                        height: 10,
+                                        height: 5,
                                       ),
                                       Text(
-                                        '💧 75%',
+                                        '💧 ${state.weatherModel.forecast!.forecastday?[0].hour?[index].chanceOfRain}%',
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white),
                                       ),
@@ -246,37 +245,64 @@ class _HomeScreenState extends State<HomeScreen> {
                                     BorderRadius.all(Radius.circular(20))),
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
-                              itemCount: 3,
+                              itemCount: state
+                                  .weatherModel.forecast!.forecastday!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 0, bottom: 14.0),
+                                String formatDate(String dateTimeStr) {
+                                  DateTime dateTime =
+                                      DateTime.parse(dateTimeStr);
+                                  DateFormat formatter = DateFormat('EEE');
+                                  return formatter.format(dateTime);
+                                }
+
+                                String formattedDate = formatDate(state
+                                    .weatherModel
+                                    .forecast!
+                                    .forecastday?[index]
+                                    .date as String);
+
+                                print(state.weatherModel.forecast!);
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0, bottom: 14.0),
                                   child: Column(
                                     children: [
                                       Text(
-                                        'Wed',
-                                        style: TextStyle(
+                                        formattedDate,
+                                        style: const TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Icon(
-                                        Icons.cloud,
-                                        size: 26,
-                                        color: Colors.red,
+                                      Image.network(
+                                        'https://${state.weatherModel.forecast!.forecastday?[index].day!.condition!.icon!.substring(2)}',
+                                        height: 50,
+                                        width: 70,
+                                        fit: BoxFit.contain,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          'Patchy rain, possible',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white),
+                                      Expanded(
+                                        child: SizedBox(
+
+                                          child: Text(
+                                            state
+                                                .weatherModel
+                                                .forecast!
+                                                .forecastday?[index]
+                                                .day!
+                                                .condition!
+                                                .text as String,
+                                            softWrap: true,
+
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ],
