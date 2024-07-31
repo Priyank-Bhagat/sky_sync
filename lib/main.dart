@@ -16,7 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const SplashScreen(),
+      home: BlocProvider(
+        create: (context) => WeatherBloc(),
+        child: const HomeScreen(),
+      ), //SplashScreen(),
     );
   }
 }

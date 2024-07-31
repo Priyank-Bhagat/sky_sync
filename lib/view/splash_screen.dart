@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkPermission() async {
-    // Check if location permission is granted
     var status = await Permission.location.status;
 
     if (status.isGranted) {
@@ -43,12 +42,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  create: (context) => WeatherBloc(),
-                  child: HomeScreen(),
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (context) => WeatherBloc(),
+          child: const HomeScreen(),
+        ),
+      ),
+    );
   }
 
   void _showPermissionDeniedDialog() {
