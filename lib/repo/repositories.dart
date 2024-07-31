@@ -8,13 +8,15 @@ import 'package:sky_sync/model/current_weather_model.dart';
 class Repositories {
   Future<CurrentWeatherModel> getCurrentWeather(double lat, double long) async {
     final response = await http.get(Uri.parse(
-        'http://api.weatherapi.com/v1/forecast.json?key=d89d5ca7edc14da7b84103218243007&q=$lat,$long&aqi=no'));
+        'http://api.weatherapi.com/v1/forecast.json?key=d89d5ca7edc14da7b84103218243007&q=vadodara&days=5&aqi=no'));
 
-    debugPrint('herere---------------${response.body}');
     if (response.statusCode == 200) {
-      debugPrint('herere--status 200');
       final data = jsonDecode(response.body);
+      debugPrint('herere---------------${data ["forecast"] ["forecastday"][0] }');
 
+      debugPrint('herere---------------${data ["forecast"] ["forecastday"][1] }');
+
+      debugPrint('herere---------------${data ["forecast"] ["forecastday"][2] }');
       return CurrentWeatherModel.fromJson(data);
     }
     throw UnimplementedError();

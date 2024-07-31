@@ -72,14 +72,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (state is WeatherLoadFailState) {
                     return Text('Failedddddd');
                   } else if (state is WeatherLoadedState) {
-                    String formatDate(String dateTimeStr) {
-                      DateTime dateTime = DateTime.parse(dateTimeStr);
-                      DateFormat formatter = DateFormat('EEE, dd MMMM');
-                      return formatter.format(dateTime);
+                    String formatDate(String dateTimeStr, String type) {
+                      if(type == 'EEE'){
+                        DateTime dateTime = DateTime.parse(dateTimeStr);
+                        DateFormat formatter = DateFormat('EEE, dd MMMM');
+                        return formatter.format(dateTime);
+                      }else{
+                        DateTime dateTime = DateTime.parse(dateTimeStr);
+                        DateFormat formatter = DateFormat('dd/MM HH:mm');
+                        return formatter.format(dateTime);
+                      }
                     }
 
-                    String formattedDate = formatDate(
-                        state.weatherModel.current!.lastUpdated as String);
+                    String todayDay = formatDate(
+                        state.weatherModel.current!.lastUpdated as String, 'EEE');
+
+
+                    String lastUpdateTime = formatDate(
+                        state.weatherModel.current!.lastUpdated as String, 'nothing');
+
+
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 6,
                               ),
                               Text(
-                                formattedDate,
+                                todayDay,
                                 style: GoogleFonts.merriweather(
                                     fontSize: 16,
                                     color: Colors.white,
@@ -120,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 80),
+                          padding: const EdgeInsets.only(top: 50),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -165,8 +177,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w400),
                         ),
                         Padding(
+                          padding: const EdgeInsets.only(top: 65, left: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Last Updated $lastUpdateTime',
+                                style: GoogleFonts.merriweather(
+                                    fontSize: 16,
+                                    color: Colors.white.withOpacity(.4),
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
                           padding: const EdgeInsets.only(
-                              left: 12.0, right: 12.0, bottom: 12.0, top: 82),
+                              left: 12.0, right: 12.0, bottom: 12.0, top: 20),
                           child: Container(
                             padding: const EdgeInsets.only(
                                 top: 0, left: 18, right: 18),
@@ -205,12 +232,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: 70,
                                         fit: BoxFit.contain,
                                       ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Text(
                                         '💧 ${state.weatherModel.forecast!.forecastday?[0].hour?[index].chanceOfRain}%',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 14, color: Colors.white),
                                       ),
                                     ],
@@ -223,9 +250,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 20),
-                                    child: const VerticalDivider(
-                                      thickness: 0.0,
-                                      color: Colors.white,
+                                    child: VerticalDivider(
+                                      thickness: 1.0,
+                                      color: Colors.white.withOpacity(0.4),
                                       width: 20,
                                     ));
                               },
@@ -236,8 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.all(12.0),
                           child: Container(
                             padding: const EdgeInsets.only(
-                                top: 18, left: 18, right: 18),
-                            height: 170,
+                                top: 5, left: 18, right: 18, bottom: 10),
+                            height: 180,
                             width: device.width,
                             decoration: const BoxDecoration(
                                 color: Color(0x661d3f46),
@@ -261,11 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     .forecastday?[index]
                                     .date as String);
 
-                                print(state.weatherModel.forecast!);
-
                                 return Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 0, bottom: 14.0),
+                                      top: 20, bottom: 14.0),
                                   child: Column(
                                     children: [
                                       Text(
@@ -274,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontSize: 20, color: Colors.white),
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 5,
                                       ),
                                       Image.network(
                                         'https://${state.weatherModel.forecast!.forecastday?[index].day!.condition!.icon!.substring(2)}',
@@ -283,26 +308,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fit: BoxFit.contain,
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 5,
                                       ),
-                                      Expanded(
-                                        child: SizedBox(
-
-                                          child: Text(
-                                            state
-                                                .weatherModel
-                                                .forecast!
-                                                .forecastday?[index]
-                                                .day!
-                                                .condition!
-                                                .text as String,
-                                            softWrap: true,
-
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.white),
-                                          ),
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text(
+                                          state
+                                              .weatherModel
+                                              .forecast!
+                                              .forecastday?[index]
+                                              .day!
+                                              .condition!
+                                              .text as String,
+                                          softWrap: true,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white),
                                         ),
                                       ),
                                     ],
@@ -315,9 +337,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 10,
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 20),
-                                    child: const VerticalDivider(
-                                      thickness: 0.0,
-                                      color: Colors.white,
+                                    child: VerticalDivider(
+                                      thickness: 1.0,
+                                      color: Colors.white.withOpacity(0.4),
                                       width: 20,
                                     ));
                               },
