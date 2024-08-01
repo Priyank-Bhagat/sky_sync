@@ -6,7 +6,6 @@ import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 
@@ -15,11 +14,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
-        create: (context) => WeatherBloc(),
-        child: const HomeScreen(),
-      ), //SplashScreen(),
+    return const MaterialApp(
+      home: SplashScreen(), //SplashScreen(),
     );
   }
 }

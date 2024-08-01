@@ -32,11 +32,11 @@ class _SplashScreenState extends State<SplashScreen> {
         _navigateToHome();
       } else {
         // Handle permission denial (e.g., show a dialog or a message)
-        _showPermissionDeniedDialog();
+        _showPermissionDeniedDialog('Location services are disabled. Please enable the services');
       }
     } else {
       // Handle other cases, like permanently denied
-      _showPermissionDeniedDialog();
+      _showPermissionDeniedDialog('Location permissions are permanently denied, we cannot request permissions.');
     }
   }
 
@@ -52,13 +52,12 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void _showPermissionDeniedDialog() {
+  void _showPermissionDeniedDialog(String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Location Permission Required'),
-        content: const Text(
-            'This app needs location permission to function properly.'),
+        content: Text(message),
         actions: [
           TextButton(
             child: const Text('OK'),
@@ -88,9 +87,14 @@ class _SplashScreenState extends State<SplashScreen> {
           const SizedBox(
             height: 20,
           ),
-          const Text(
-            'Location Permission Required:- ',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+          GestureDetector(
+            onTap: ()async{
+              await  openAppSettings();
+            },
+            child: const Text(
+              'Location Permission Required:- ',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+            ),
           ),
           Container(
               padding: const EdgeInsets.only(top: 20),
