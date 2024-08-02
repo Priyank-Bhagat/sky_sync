@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(FetchWeatherEvent());
+   // context.read<WeatherBloc>().add(FetchWeatherEvent());
     super.initState();
   }
 

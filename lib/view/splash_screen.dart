@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
@@ -32,11 +35,13 @@ class _SplashScreenState extends State<SplashScreen> {
         _navigateToHome();
       } else {
         // Handle permission denial (e.g., show a dialog or a message)
-        _showPermissionDeniedDialog('Location services are disabled. Please enable the services');
+        _showPermissionDeniedDialog(
+            'Location services are disabled. Please enable the services');
       }
     } else {
       // Handle other cases, like permanently denied
-      _showPermissionDeniedDialog('Location permissions are permanently denied, we cannot request permissions.');
+      _showPermissionDeniedDialog(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
   }
 
@@ -72,37 +77,86 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    Size device = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
         children: [
-          const SizedBox(
-            width: double.infinity,
+          Image.asset(
+            'assets/images/bgimg.jpg',
+            height: device.height,
+            width: device.width,
+            fit: BoxFit.cover,
           ),
-          const Icon(
-            Icons.location_disabled,
-            size: 40,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Image.asset(
+                'assets/images/loader.gif',
+                height: 250,
+                width: 250,
+              ),
+              const SizedBox(height: 270,),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 18),
+                child: Text(
+                  'Allow SkySync to provide you with the most accurate forecast by allowing us to use your device\'s location.',
+                  style: GoogleFonts.poppins(color: Colors.white, fontSize: 15),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 150),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _checkPermission();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white70,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // <-- Radius
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Continue',
+                        style: TextStyle(
+                          color: Color(0xff1d3f46),
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                      Icon(
+                        Icons.location_pin,
+                        color: Color(0xff1d3f46),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50, top: 20),
+                child: Text(
+                  'Set city manually',
+                  style: GoogleFonts.poppins(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white70,
+                    letterSpacing: 1,
+                  ),
+                ),
+              )
+            ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onTap: ()async{
-              await  openAppSettings();
-            },
-            child: const Text(
-              'Location Permission Required:- ',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-            ),
-          ),
-          Container(
-              padding: const EdgeInsets.only(top: 20),
-              width: 300,
-              child: const Text(
-                  'Resolve it by :- \n -> Give permission manually from Settings app, and then reopen SkySync app.'))
         ],
       ),
     );
+
   }
 }
