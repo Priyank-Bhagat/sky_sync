@@ -1,11 +1,11 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
+
+import 'package:sky_sync/repo/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,66 +18,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkPermission();
+    // _checkPermission();
   }
 
-  Future<void> _checkPermission() async {
-    var status = await Permission.location.status;
 
-    if (status.isGranted) {
-      _navigateToHome();
-    } else if (status.isDenied) {
-      // If permission is denied, request permission
-      await Permission.location.request();
-      // After requesting, check the permission status again
-      status = await Permission.location.status;
-      if (status.isGranted) {
-        _navigateToHome();
-      } else {
-        // Handle permission denial (e.g., show a dialog or a message)
-        _showPermissionDeniedDialog(
-            'Location services are disabled. Please enable the services');
-      }
-    } else {
-      // Handle other cases, like permanently denied
-      _showPermissionDeniedDialog(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-  }
 
-  void _navigateToHome() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => BlocProvider(
-          create: (context) => WeatherBloc(),
-          child: const HomeScreen(),
-        ),
-      ),
-    );
-  }
-
-  void _showPermissionDeniedDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Location Permission Required'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-
     Size device = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -96,10 +44,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 250,
                 width: 250,
               ),
-              const SizedBox(height: 270,),
+              const SizedBox(
+                height: 270,
+              ),
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 child: Text(
                   'Allow SkySync to provide you with the most accurate forecast by allowing us to use your device\'s location.',
                   style: GoogleFonts.poppins(color: Colors.white, fontSize: 15),
@@ -109,10 +58,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 30,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 150),
+                padding: const EdgeInsets.symmetric(horizontal: 130),
                 child: ElevatedButton(
                   onPressed: () {
-                    _checkPermission();
+                    checkLocationPerNSer();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white70,
@@ -157,6 +106,5 @@ class _SplashScreenState extends State<SplashScreen> {
         ],
       ),
     );
-
   }
 }
