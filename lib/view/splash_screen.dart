@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
-
+import 'package:location/location.dart' as loc;
 import 'package:sky_sync/repo/utils.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,18 +22,21 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(
       const Duration(seconds: 3),
-      () {
+      () async {
         if (widget.lastScreenName == 'MyApp') {
           _checker();
         } else {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => WeatherBloc(),
-                  child: const HomeScreen(),
-                ),
-              ),
-              (Route route) => false);
+          bool isLocationEnabled = await loc.Location().serviceEnabled();
+          isLocationEnabled
+              ? Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) => WeatherBloc(),
+                      child: const HomeScreen(),
+                    ),
+                  ),
+                  (Route route) => false)
+              : {isLocationEnabled = await loc.Location().requestService()};
         }
       },
     );
