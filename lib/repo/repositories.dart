@@ -4,19 +4,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:sky_sync/model/current_weather_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Repositories {
   Future<CurrentWeatherModel> getCurrentWeather() async {
-    Position position = await determinePosition();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final double? latitude = prefs.getDouble('latitude');
+    final double? longitude = prefs.getDouble('longitude');
 
-    final response = await http.get(Uri.parse(
-        'http://api.weatherapi.com/v1/forecast.json?key=d89d5ca7edc14da7b84103218243007&q=${position.latitude},${position.longitude}&days=5&aqi=no'));
+    if (latitude != null && longitude != null) {
+      final response = await http.get(Uri.parse(
+          'http://api.weatherapi.com/v1/forecast.json?key=d89d5ca7edc14da7b84103218243007&q=$latitude,$longitude&days=5&aqi=no'));
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return CurrentWeatherModel.fromJson(data);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return CurrentWeatherModel.fromJson(data);
+      }
+      throw UnimplementedError();
+    } else {
+      Position position = await determinePosition();
+      final response = await http.get(Uri.parse(
+          'http://api.weatherapi.com/v1/forecast.json?key=d89d5ca7edc14da7b84103218243007&q=${position.latitude},${position.longitude}&days=5&aqi=no'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return CurrentWeatherModel.fromJson(data);
+      }
+      throw UnimplementedError();
     }
-    throw UnimplementedError();
   }
 
   Future<Position> determinePosition() async {
@@ -46,6 +61,14 @@ class Repositories {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    _storeLocation(position.latitude, position.longitude);
+
     return position;
+  }
+
+  Future<void> _storeLocation(double latitude, double longitude) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('latitude', latitude);
+    await prefs.setDouble('longitude', longitude);
   }
 }

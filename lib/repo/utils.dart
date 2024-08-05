@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as loc;
 import 'package:sky_sync/main.dart';
 import 'package:sky_sync/view/home_screen.dart';
+import 'package:sky_sync/view/splash_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 
 // Weather Ui logic
@@ -190,15 +191,11 @@ Future<void> checkLocationPerNSer() async {
   }
 }
 
-
 void _navigateToHome() {
   if (navigatorKey.currentContext != null) {
     navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => WeatherBloc(),
-            child: const HomeScreen(),
-          ),
+          builder: (context) =>  SplashScreen(lastScreenName: '',),
         ),
         (Route route) => false);
   }

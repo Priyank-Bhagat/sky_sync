@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 
 import 'package:sky_sync/repo/utils.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  String lastScreenName;
+
+  SplashScreen({super.key, required this.lastScreenName});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -18,16 +20,91 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // _checkPermission();
+    Future.delayed(
+      const Duration(seconds: 3),
+      () {
+        if (widget.lastScreenName == 'MyApp') {
+          _checker();
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => WeatherBloc(),
+                  child: const HomeScreen(),
+                ),
+              ),
+              (Route route) => false);
+        }
+      },
+    );
   }
 
+  void _checker() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final double? latitude = prefs.getDouble('latitude');
+    final double? longitude = prefs.getDouble('longitude');
 
+    if (latitude != null && longitude != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => WeatherBloc(),
+              child: const HomeScreen(),
+            ),
+          ),
+          (Route route) => false);
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => WeatherBloc(),
+              child: const WelcomeScreen(),
+            ),
+          ),
+          (Route route) => false);
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0x661d3f46),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            width: double.infinity,
+          ),
+          Image.asset(
+            'assets/images/loader.gif',
+            height: 250,
+            width: 250,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size device = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: const Color(0x661d3f46),
       body: Stack(
         children: [
           Image.asset(
