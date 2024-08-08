@@ -153,6 +153,58 @@ void showLocationDeniedDialog(String title, String message) {
   );
 }
 
+Future<void> checkLocationPermissionsAndServices() async {
+  final loc.Location location = loc.Location();
+  var permissionStatus = await Permission.location.status;
+  bool isLocationEnabled = await location.serviceEnabled();
+
+  if (permissionStatus.isGranted) {
+    if (isLocationEnabled) {
+      _navigateToHome();
+    } else {
+      await _handleLocationServiceRequest(location);
+    }
+  } else if (permissionStatus.isDenied) {
+    await _handleLocationPermissionRequest(location);
+  } else {
+    showLocationDeniedDialog(
+        'Location Permission Required',
+        'Location permissions are permanently denied; we cannot request permissions.'
+    );
+  }
+}
+
+// Handle location service request
+Future<void> _handleLocationServiceRequest(loc.Location location) async {
+  bool isLocationEnabled = await location.requestService();
+  if (isLocationEnabled) {
+    _navigateToHome();
+  } else {showLocationDeniedDialog(
+        'Location Service Disabled',
+        'Please enable location service, or set location manually.'
+    );
+  }
+}
+
+// Handle location permission request
+Future<void> _handleLocationPermissionRequest(loc.Location location) async {
+  var permissionStatus = await Permission.location.request();
+  if (permissionStatus.isGranted) {
+    bool isLocationEnabled = await location.serviceEnabled();
+    if (isLocationEnabled) {
+      _navigateToHome();
+    } else {
+      await _handleLocationServiceRequest(location);
+    }
+  } else {
+    showLocationDeniedDialog(
+        'Location Permission Required',
+        'Location permissions are denied. Please enable the permissions to proceed.'
+    );
+  }
+}
+
+
 Future<void> checkLocationPerNSer() async {
   final location = loc.Location();
   var permissionStatus = await Permission.location.status;

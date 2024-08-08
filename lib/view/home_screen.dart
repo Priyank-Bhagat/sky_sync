@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(FetchWeatherEvent());
+    context.read<WeatherBloc>().add(FetchWeatherEvent(newLocationReq: 'no'));
     super.initState();
   }
 
@@ -318,7 +318,10 @@ class _HomeScreenState extends State<HomeScreen> {
           left: 10,
           child: GestureDetector(
             onTap: () {
-             // showSearch(context: context, delegate: MySearchDelegant());
+              context
+                  .read<WeatherBloc>()
+                  .add(FetchWeatherEvent(newLocationReq: 'yes'));
+              // showSearch(context: context, delegate: MySearchDelegant());
             },
             child: Container(
               padding: const EdgeInsets.all(8),
@@ -326,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Color(0x661d3f46),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: const Icon(
-                Icons.search,
+                Icons.location_pin,
                 color: Colors.white,
                 size: 32,
               ),
@@ -355,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         WeatherBg(
-            weatherType: WeatherType.hazy,
+            weatherType: WeatherType.cloudyNight,
             width: device.width,
             height: device.height),
         Scaffold(
@@ -437,4 +440,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
