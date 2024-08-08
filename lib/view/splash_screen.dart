@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
           MaterialPageRoute(
             builder: (context) => BlocProvider(
               create: (context) => WeatherBloc(),
-              child: const WelcomeScreen(),
+              child: WelcomeScreen(),
             ),
           ),
           (Route route) => false);
@@ -90,18 +90,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
-
-  @override
-  State<WelcomeScreen> createState() => _WelcomeScreenState();
-}
-
-class _WelcomeScreenState extends State<WelcomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+class WelcomeScreen extends StatelessWidget {
+  final permissionHandler = LocationAndPermissions();
+  WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +132,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 130),
                 child: ElevatedButton(
                   onPressed: () {
-                    checkLocationPerNSer();
+                    permissionHandler.checkLocationPermissionsAndServices();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white70,

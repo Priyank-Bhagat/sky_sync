@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sky_sync/view/splash_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -349,6 +349,31 @@ class _HomeScreenState extends State<HomeScreen> {
           'Something unexpected happened.',
           style: TextStyle(
               fontSize: 20, color: Colors.red, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(
+          height: 25,
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen(
+                    lastScreenName: '',
+                  ),
+                ),
+                (Route route) => false);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+                color: Color(0x661d3f46),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
         )
       ]),
     );
