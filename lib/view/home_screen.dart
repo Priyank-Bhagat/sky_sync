@@ -319,7 +319,14 @@ class _HomeScreenState extends State<HomeScreen> {
         Positioned(
           top: 10,
           left: 10,
-          child: AnimatedFAB(),
+          child: AnimatedFAB(
+            locationOnPressed: () {
+              context
+                  .read<WeatherBloc>()
+                  .add(FetchWeatherEvent(newLocationReq: 'yes'));
+              // showSearch(context: context, delegate: MySearchDelegant());
+            },
+          ),
           // child: GestureDetector(
           //   onTap: () {
           //     context

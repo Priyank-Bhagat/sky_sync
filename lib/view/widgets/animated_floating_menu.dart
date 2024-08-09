@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AnimatedFAB extends StatefulWidget {
+  VoidCallback locationOnPressed;
 
+  AnimatedFAB({super.key, required this.locationOnPressed});
 
   @override
   _AnimatedFABState createState() => _AnimatedFABState();
@@ -60,9 +62,9 @@ class _AnimatedFABState extends State<AnimatedFAB>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
-      width: size.width,
       height: size.height,
-      child:  Stack(
+      width: size.width,
+      child: Stack(
         children: <Widget>[
           Transform.translate(
             offset: Offset.fromDirection(getRadiansFromDegree(90),
@@ -80,7 +82,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
                   Icons.location_pin,
                   color: Color(0xff1d3f46),
                 ),
-                onClick: () {},
+                onClick: widget.locationOnPressed,
               ),
             ),
           ),
@@ -100,7 +102,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
                   Icons.location_city,
                   color: Color(0xff1d3f46),
                 ),
-                onClick: () {},
+                onClick: (){},
               ),
             ),
           ),
@@ -145,7 +147,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
             ),
           ),
         ],
-      )
+      ),
     );
   }
 
@@ -160,7 +162,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
           color: bgColor ?? const Color(0x661d3f46), shape: BoxShape.circle),
       width: width,
       height: height,
-      child: IconButton(icon: icon, enableFeedback: true, onPressed: onClick),
+      child: IconButton(icon: icon, onPressed: onClick),
     );
   }
 }
