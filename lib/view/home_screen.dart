@@ -8,6 +8,7 @@ import 'package:sky_sync/view/widgets/animated_floating_menu.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../model/current_weather_model.dart';
 import '../repo/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String lastUpdateTime = formatDate(
         state.weatherModel.current!.lastUpdated as String, 'nothing');
-
 
     return Stack(
       children: [
@@ -184,7 +184,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.weatherModel.forecast!.forecastday![0].hour!.length,
+                      itemCount: state
+                          .weatherModel.forecast!.forecastday![0].hour!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.only(
@@ -192,8 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             children: [
                               Text(
-                                state.weatherModel.forecast!.forecastday![0].hour![index]
-                                    .time!
+                                state.weatherModel.forecast!.forecastday![0]
+                                    .hour![index].time!
                                     .substring(11),
                                 style: const TextStyle(
                                     fontSize: 18, color: Colors.white),
