@@ -17,6 +17,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final permissionHandler = LocationAndPermissions();
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   (Route route) => false)
-              : {isLocationEnabled = await loc.Location().requestService()};
+              : {permissionHandler.checkLocationPermissionsAndServices()};
         }
       },
     );
