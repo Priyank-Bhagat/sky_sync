@@ -18,7 +18,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
         try {
           await repo
-              .getCurrentWeather(newLocationReq: event.newLocationReq)
+              .getCurrentWeather(newLocationReq: event.newLocationReq,cityName: event.cityName)
               .then((value) {
             emit.call(WeatherLoadedState(weatherModel: value));
           }).onError((error, stacktrace) {
