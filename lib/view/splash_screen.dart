@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sky_sync/view/home_screen.dart';
+import 'package:sky_sync/view/widgets/city_searchbar_screen.dart';
 import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
 import 'package:location/location.dart' as loc;
 import 'package:sky_sync/repo/utils.dart';
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => WeatherBloc(),
-                      child: const HomeScreen(),
+                      child:  HomeScreen(cityName: '',),
                     ),
                   ),
                   (Route route) => false)
@@ -52,19 +53,13 @@ class _SplashScreenState extends State<SplashScreen> {
     if (latitude != null && longitude != null) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => WeatherBloc(),
-              child: const HomeScreen(),
-            ),
+            builder: (context) =>  HomeScreen(cityName: '',),
           ),
           (Route route) => false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => WeatherBloc(),
-              child: WelcomeScreen(),
-            ),
+            builder: (context) =>  WelcomeScreen(),
           ),
           (Route route) => false);
     }
@@ -161,16 +156,21 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50, top: 20),
-                child: Text(
-                  'Set city manually',
-                  style: GoogleFonts.poppins(
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white70,
-                    letterSpacing: 1,
+              GestureDetector(
+                onTap: () {
+                  showSearch(context: context, delegate: CitySearchBarScreen());
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 50, top: 20),
+                  child: Text(
+                    'Set city manually',
+                    style: GoogleFonts.poppins(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.white70,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
               )

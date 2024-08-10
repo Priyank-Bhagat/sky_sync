@@ -12,7 +12,8 @@ import '../model/current_weather_model.dart';
 import '../repo/utils.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String cityName;
+   HomeScreen({super.key, required this.cityName});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,7 +22,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(FetchWeatherEvent(newLocationReq: 'no'));
+    if(widget.cityName == ''){
+
+      context.read<WeatherBloc>().add(FetchWeatherEvent(newLocationReq: 'no', cityName: ''));
+    }else{
+      context.read<WeatherBloc>().add(FetchWeatherEvent(newLocationReq: 'no', cityName: widget.cityName));
+    }
     super.initState();
   }
 
@@ -323,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
             locationOnPressed: () {
               context
                   .read<WeatherBloc>()
-                  .add(FetchWeatherEvent(newLocationReq: 'yes'));
+                  .add(FetchWeatherEvent(newLocationReq: 'yes', cityName: ''));
               // showSearch(context: context, delegate: MySearchDelegant());
             },
           ),

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sky_sync/model/current_weather_model.dart';
 import 'package:sky_sync/repo/repositories.dart';
 
@@ -10,7 +9,7 @@ part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
-  Repositories repo = Repositories();
+  RepoForWeather repo = RepoForWeather();
 
   WeatherBloc() : super(WeatherInitialState()) {
     on<WeatherEvent>((event, emit) async {

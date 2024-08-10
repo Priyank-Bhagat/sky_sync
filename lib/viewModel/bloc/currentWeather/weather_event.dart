@@ -5,6 +5,7 @@ abstract class WeatherEvent {}
 
 class FetchWeatherEvent extends WeatherEvent {
   String newLocationReq;
+  String cityName;
 
-  FetchWeatherEvent({required this.newLocationReq });
+  FetchWeatherEvent({required this.newLocationReq ,required this.cityName});
 }
