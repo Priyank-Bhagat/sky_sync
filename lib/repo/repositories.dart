@@ -12,19 +12,15 @@ class Repositories {
 
   Future<CurrentWeatherModel> getCurrentWeather(
       {required String newLocationReq}) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final double? latitude = prefs.getDouble('latitude');
-    final double? longitude = prefs.getDouble('longitude');
-
     PositionModel? position;
+    position = await _fetchLocationFromSharePref();
 
     // Determine coordinates
+
     if (newLocationReq == 'yes') {
       position = await _determinePosition();
     } else {
-      position = (latitude != null && longitude != null)
-          ? PositionModel(latitude: latitude, longitude: longitude)
-          : await _determinePosition();
+      position ??= await _determinePosition();
     }
 
     // HTTP Req
@@ -32,7 +28,6 @@ class Repositories {
         '$baseUrl?key=$apiKey&q=${position!.latitude},${position.longitude}&days=$forecastDays&aqi=no';
 
     final response = await http.get(Uri.parse(url));
-
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return CurrentWeatherModel.fromJson(data);
@@ -46,7 +41,7 @@ class Repositories {
     bool isLocationEnabled = await location.serviceEnabled();
 
     if (!isLocationEnabled) {
-      bool isLocationEnabled = await location.requestService();
+      isLocationEnabled = await location.requestService();
 
       if (!isLocationEnabled) {
         throw Exception('Location services are disabled.');
@@ -55,7 +50,10 @@ class Repositories {
 
     // Get current location
     if (isLocationEnabled) {
-      final position = await location.getLocation();
+      final position =
+          await Future.delayed(const Duration(milliseconds: 100), () {
+        return location.getLocation();
+      });
 
       _storeLocation(
           position.latitude!.toDouble(), position.longitude!.toDouble());
@@ -73,5 +71,14 @@ class Repositories {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setDouble('latitude', latitude);
     await prefs.setDouble('longitude', longitude);
+  }
+
+  Future<PositionModel?> _fetchLocationFromSharePref() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final double? latitude = prefs.getDouble('latitude');
+    final double? longitude = prefs.getDouble('longitude');
+
+    return PositionModel(
+        latitude: latitude!.toDouble(), longitude: longitude!.toDouble());
   }
 }
