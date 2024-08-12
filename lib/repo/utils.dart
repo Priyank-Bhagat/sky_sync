@@ -87,14 +87,13 @@ class LocationAndPermissions {
   }
 }
 
-
 void navigateToHome() {
   if (navigatorKey.currentContext != null) {
     navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (context) => const HomeScreen(),
         ),
-            (Route route) => false);
+        (Route route) => false);
   }
 }
 
@@ -209,15 +208,18 @@ WeatherType getWeatherCondition(int iconCode, int mode) {
   }
 }
 
-
 String formatDate(String dateTimeStr, String type) {
-  if (type == 'EEE') {
+  if (type == 'EdM') {
     DateTime dateTime = DateTime.parse(dateTimeStr);
     DateFormat formatter = DateFormat('EEE, dd MMMM');
     return formatter.format(dateTime);
-  } else {
+  } else if (type == 'dMHm') {
     DateTime dateTime = DateTime.parse(dateTimeStr);
     DateFormat formatter = DateFormat('dd/MM HH:mm');
+    return formatter.format(dateTime);
+  } else {
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+    DateFormat formatter = DateFormat('EEE');
     return formatter.format(dateTime);
   }
 }

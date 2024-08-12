@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String cityName = state.weatherModel.location!.name.toString();
 
-    String todayDay = formatDate(current.lastUpdated as String, 'EEE');
+    String todayDay = formatDate(current.lastUpdated as String, 'EdM');
 
     String imgUrl =
         'https://${current.condition!.icon.toString().substring(2)}';
@@ -72,17 +72,17 @@ class _HomeScreenState extends State<HomeScreen> {
     String currentCondition = current.condition!.text.toString();
 
     String lastUpdateTime =
-        'Last Updated ${formatDate(current.lastUpdated as String, 'nothing')}';
+        'Last Updated ${formatDate(current.lastUpdated as String, 'dMHm')}';
 
-    return Stack(
-      children: [
-        WeatherBg(
-            weatherType: weatherCondition,
-            width: device.width,
-            height: device.height),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          WeatherBg(
+              weatherType: weatherCondition,
+              width: device.width,
+              height: device.height),
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -318,21 +318,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        ),
-        Positioned(
-          top: 10,
-          left: 10,
-          child: AnimatedFAB(
-            locationOnPressed: () {
-              context.read<WeatherBloc>().add(FetchWeatherEvent());
-            },
-            cityOnPressed: () {
-              showSearch(context: context, delegate: CitySearchBarScreen());
-            },
-            mapOnPressed: () {},
+          Positioned(
+            top: 10,
+            left: 10,
+            child: AnimatedFAB(
+              locationOnPressed: () {
+                context.read<WeatherBloc>().add(FetchWeatherEvent());
+              },
+              cityOnPressed: () {
+                showSearch(context: context, delegate: CitySearchBarScreen());
+              },
+              mapOnPressed: () {},
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -374,15 +374,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _loadingScreen(Size device) {
-    return Stack(
-      children: [
-        WeatherBg(
-            weatherType: WeatherType.cloudyNight,
-            width: device.width,
-            height: device.height),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          WeatherBg(
+              weatherType: WeatherType.cloudyNight,
+              width: device.width,
+              height: device.height),
+          SingleChildScrollView(
               child: Shimmer.fromColors(
             baseColor: const Color(0x661d3f46),
             highlightColor: const Color(0x991d3f46),
@@ -454,8 +454,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           )),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
