@@ -4,8 +4,7 @@ part of 'weather_bloc.dart';
 abstract class WeatherEvent {}
 
 class FetchWeatherEvent extends WeatherEvent {
-  String newLocationReq;
-  String cityName;
+  String? cityName;
 
-  FetchWeatherEvent({required this.newLocationReq ,required this.cityName});
+  FetchWeatherEvent({this.cityName});
 }

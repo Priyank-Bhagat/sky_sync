@@ -1,9 +1,10 @@
 import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sky_sync/view/home_screen.dart';
 import '../main.dart';
-import '../view/splash_screen.dart';
 
 // Location Logic
 class LocationAndPermissions {
@@ -14,7 +15,7 @@ class LocationAndPermissions {
 
     if (permissionStatus.isGranted) {
       if (isLocationEnabled) {
-        _navigateToHome();
+        navigateToHome();
       } else {
         await _handleLocationServiceRequest(location);
       }
@@ -29,7 +30,7 @@ class LocationAndPermissions {
   Future<void> _handleLocationServiceRequest(loc.Location location) async {
     bool isLocationEnabled = await location.requestService();
     if (isLocationEnabled) {
-      _navigateToHome();
+      navigateToHome();
     } else {
       _showLocationDeniedDialog('Location Service Disabled',
           'Please enable location service, or set location manually.');
@@ -41,25 +42,13 @@ class LocationAndPermissions {
     if (permissionStatus.isGranted) {
       bool isLocationEnabled = await location.serviceEnabled();
       if (isLocationEnabled) {
-        _navigateToHome();
+        navigateToHome();
       } else {
         await _handleLocationServiceRequest(location);
       }
     } else {
       _showLocationDeniedDialog('Location Permission Required',
           'Location permissions are denied. Please enable the permissions to proceed.');
-    }
-  }
-
-  void _navigateToHome() {
-    if (navigatorKey.currentContext != null) {
-      navigatorKey.currentState?.pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => SplashScreen(
-              lastScreenName: '',
-            ),
-          ),
-          (Route route) => false);
     }
   }
 
@@ -95,6 +84,17 @@ class LocationAndPermissions {
         ],
       ),
     );
+  }
+}
+
+
+void navigateToHome() {
+  if (navigatorKey.currentContext != null) {
+    navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+            (Route route) => false);
   }
 }
 
@@ -206,5 +206,18 @@ WeatherType getWeatherCondition(int iconCode, int mode) {
     return dayIconCodeToWeatherCondition[iconCode] ?? WeatherType.sunny;
   } else {
     return nightIconCodeToWeatherCondition[iconCode] ?? WeatherType.sunnyNight;
+  }
+}
+
+
+String formatDate(String dateTimeStr, String type) {
+  if (type == 'EEE') {
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+    DateFormat formatter = DateFormat('EEE, dd MMMM');
+    return formatter.format(dateTime);
+  } else {
+    DateTime dateTime = DateTime.parse(dateTimeStr);
+    DateFormat formatter = DateFormat('dd/MM HH:mm');
+    return formatter.format(dateTime);
   }
 }

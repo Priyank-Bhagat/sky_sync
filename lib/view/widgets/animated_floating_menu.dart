@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AnimatedFAB extends StatefulWidget {
-  VoidCallback locationOnPressed;
+  final VoidCallback locationOnPressed, cityOnPressed, mapOnPressed;
 
-  AnimatedFAB({super.key, required this.locationOnPressed});
+  const AnimatedFAB(
+      {super.key,
+      required this.locationOnPressed,
+      required this.cityOnPressed,
+      required this.mapOnPressed});
 
   @override
   _AnimatedFABState createState() => _AnimatedFABState();
@@ -18,35 +22,40 @@ class _AnimatedFABState extends State<AnimatedFAB>
   Animation? rotationAnimation;
 
   double getRadiansFromDegree(double degree) {
-    double unitRadian = 57.295779513;
-    return degree / unitRadian;
+    return degree * (3.141592653589793 / 180.0);
   }
 
   @override
   void initState() {
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 250));
+
     degOneTranslationAnimation = TweenSequence(<TweenSequenceItem>[
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
     ]).animate(animationController!);
+
     degTwoTranslationAnimation = TweenSequence(<TweenSequenceItem>[
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0)
     ]).animate(animationController!);
+
     degThreeTranslationAnimation = TweenSequence(<TweenSequenceItem>[
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0)
     ]).animate(animationController!);
+
     rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
         CurvedAnimation(parent: animationController!, curve: Curves.easeOut));
+
     super.initState();
+
     animationController!.addListener(() {
       setState(() {});
     });
@@ -102,7 +111,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
                   Icons.location_city,
                   color: Color(0xff1d3f46),
                 ),
-                onClick: (){},
+                onClick: widget.cityOnPressed,
               ),
             ),
           ),
@@ -122,7 +131,7 @@ class _AnimatedFABState extends State<AnimatedFAB>
                   Icons.map_sharp,
                   color: Color(0xff1d3f46),
                 ),
-                onClick: () {},
+                onClick: widget.mapOnPressed,
               ),
             ),
           ),
@@ -152,8 +161,8 @@ class _AnimatedFABState extends State<AnimatedFAB>
   }
 
   Widget _circularButton(
-      {required double width,
-      Color? bgColor,
+      {Color? bgColor,
+      required double width,
       required double height,
       required Icon icon,
       required VoidCallback onClick}) {

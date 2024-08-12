@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/view/splash_screen.dart';
 import 'package:sky_sync/viewModel/bloc/citySearch/city_search_bloc.dart';
 
@@ -32,9 +29,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
-        home: SplashScreen(
-          lastScreenName: 'MyApp',
-        ),
+        home: const SplashScreen(),
       ),
     );
   }

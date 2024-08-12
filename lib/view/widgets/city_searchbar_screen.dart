@@ -107,12 +107,15 @@ class CitySearchBarScreen extends SearchDelegate {
               itemCount: state.citySearchModel.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  onTap: (){
+                  onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(cityName: state.citySearchModel[index].name.toString(),),
+                          builder: (context) => HomeScreen(
+                            cityName:
+                                state.citySearchModel[index].name.toString(),
+                          ),
                         ),
-                            (Route route) => false);
+                        (Route route) => false);
                   },
                   leading: const Icon(
                     Icons.location_city,

@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sky_sync/view/home_screen.dart';
 import 'package:sky_sync/view/widgets/city_searchbar_screen.dart';
-import 'package:sky_sync/viewModel/bloc/currentWeather/weather_bloc.dart';
-import 'package:location/location.dart' as loc;
 import 'package:sky_sync/repo/utils.dart';
 
 class SplashScreen extends StatefulWidget {
-  String lastScreenName;
-
-  SplashScreen({super.key, required this.lastScreenName});
+  const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
@@ -23,47 +16,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      const Duration(seconds: 3),
-      () async {
-        if (widget.lastScreenName == 'MyApp') {
-          _checker();
-        } else {
-          bool isLocationEnabled = await loc.Location().serviceEnabled();
-          isLocationEnabled
-              ? Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      create: (context) => WeatherBloc(),
-                      child:  HomeScreen(cityName: '',),
-                    ),
-                  ),
-                  (Route route) => false)
-              : {permissionHandler.checkLocationPermissionsAndServices()};
-        }
-      },
-    );
+
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+    });
+
   }
 
-  void _checker() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final double? latitude = prefs.getDouble('latitude');
-    final double? longitude = prefs.getDouble('longitude');
-
-    if (latitude != null && longitude != null) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) =>  HomeScreen(cityName: '',),
-          ),
-          (Route route) => false);
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) =>  WelcomeScreen(),
-          ),
-          (Route route) => false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
