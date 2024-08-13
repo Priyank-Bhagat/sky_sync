@@ -315,6 +315,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
+                Image.asset(
+                  'assets/images/citys.png',
+                  width: device.width - 20,
+                  fit: BoxFit.fitWidth,
+                ),
               ],
             ),
           ),

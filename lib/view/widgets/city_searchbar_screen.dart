@@ -96,6 +96,7 @@ class CitySearchBarScreen extends SearchDelegate {
 
     return BlocBuilder<CitySearchBloc, CitySearchState>(
       builder: (context, state) {
+        Size device = MediaQuery.of(context).size;
         if (state is CitiesLoadingState) {
           return const Text('loading');
         } else if (state is CitiesLoadedState) {
@@ -157,15 +158,25 @@ class CitySearchBarScreen extends SearchDelegate {
               const SizedBox(
                 width: double.infinity,
               ),
-              const Icon(
-                Icons.home_work_outlined,
-                color: Colors.white54,
-                size: 100,
+              Image.asset(
+                'assets/images/citys.png',
+                width: device.width - 40,
+                fit: BoxFit.fitWidth,
+              ),
+              // const Icon(
+              //   Icons.home_work_outlined,
+              //   color: Colors.white54,
+              //   size: 100,
+              // ),
+              Text(
+                'Search your',
+                style: GoogleFonts.playfairDisplay(
+                    fontSize: 20, color: Colors.white,letterSpacing: 5),
               ),
               Text(
-                'Search your HOME CITY',
-                style: GoogleFonts.dancingScript(
-                    fontSize: 30, color: Colors.white),
+                'HOME CITY',
+                style: GoogleFonts.playfairDisplay(
+                    fontSize: 20, color: Colors.white,letterSpacing: 15),
               )
             ],
           );

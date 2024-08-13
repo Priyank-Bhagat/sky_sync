@@ -59,7 +59,7 @@ class RepoForWeather {
     // Get current location
     if (isLocationEnabled) {
       final position =
-          await Future.delayed(const Duration(milliseconds: 100), () {
+          await Future.delayed(const Duration(milliseconds: 500), () {
         return location.getLocation();
       });
 
