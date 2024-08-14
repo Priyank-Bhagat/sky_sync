@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AnimatedFAB extends StatefulWidget {
-  final VoidCallback locationOnPressed, cityOnPressed, mapOnPressed;
+  final VoidCallback locationOnPressed, mapOnPressed;
 
   const AnimatedFAB(
-      {super.key,
-      required this.locationOnPressed,
-      required this.cityOnPressed,
-      required this.mapOnPressed});
+      {super.key, required this.locationOnPressed, required this.mapOnPressed});
 
   @override
-  _AnimatedFABState createState() => _AnimatedFABState();
+  State<AnimatedFAB> createState() => _AnimatedFABState();
 }
 
 class _AnimatedFABState extends State<AnimatedFAB>
     with SingleTickerProviderStateMixin {
   AnimationController? animationController;
-  Animation? degOneTranslationAnimation,
-      degTwoTranslationAnimation,
-      degThreeTranslationAnimation;
+  Animation? degOneTranslationAnimation;
   Animation? rotationAnimation;
 
   double getRadiansFromDegree(double degree) {
@@ -35,20 +30,6 @@ class _AnimatedFABState extends State<AnimatedFAB>
           tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
       TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController!);
-
-    degTwoTranslationAnimation = TweenSequence(<TweenSequenceItem>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0)
-    ]).animate(animationController!);
-
-    degThreeTranslationAnimation = TweenSequence(<TweenSequenceItem>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0)
     ]).animate(animationController!);
 
     rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
@@ -98,26 +79,6 @@ class _AnimatedFABState extends State<AnimatedFAB>
           Transform.translate(
             offset: Offset.fromDirection(getRadiansFromDegree(90),
                 degOneTranslationAnimation!.value * 140),
-            child: Transform(
-              transform: Matrix4.rotationZ(
-                  getRadiansFromDegree(rotationAnimation!.value))
-                ..scale(degOneTranslationAnimation!.value),
-              alignment: Alignment.center,
-              child: _circularButton(
-                width: 50,
-                height: 50,
-                bgColor: Colors.white,
-                icon: const Icon(
-                  Icons.location_city,
-                  color: Color(0xff1d3f46),
-                ),
-                onClick: widget.cityOnPressed,
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset.fromDirection(getRadiansFromDegree(90),
-                degOneTranslationAnimation!.value * 200),
             child: Transform(
               transform: Matrix4.rotationZ(
                   getRadiansFromDegree(rotationAnimation!.value))

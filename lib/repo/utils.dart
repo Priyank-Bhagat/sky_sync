@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sky_sync/view/home_screen.dart';
+import 'package:sky_sync/view/home/home_screen.dart';
 import '../main.dart';
 
 // Location Logic
@@ -48,7 +48,7 @@ class LocationAndPermissions {
       }
     } else {
       _showLocationDeniedDialog('Location Permission Required',
-          'Location permissions are denied. Please enable the permissions to proceed.');
+          'Precious Location permissions are denied. Please enable the permissions to proceed.');
     }
   }
 

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../viewModel/bloc/citySearch/city_search_bloc.dart';
-import '../home_screen.dart';
+import '../home/home_screen.dart';
 
-class CitySearchBarScreen extends SearchDelegate {
+class CitySearchDelegate extends SearchDelegate {
   @override
   ThemeData appBarTheme(BuildContext context) {
     return ThemeData(
@@ -94,11 +94,20 @@ class CitySearchBarScreen extends SearchDelegate {
       context.read<CitySearchBloc>().add(GetCitiesListEvent(cityName: query));
     }
 
+    if (query.isEmpty) {
+      context.read<CitySearchBloc>().add(SearchResetToInitEvent());
+    }
+
     return BlocBuilder<CitySearchBloc, CitySearchState>(
       builder: (context, state) {
         Size device = MediaQuery.of(context).size;
         if (state is CitiesLoadingState) {
-          return const Text('loading');
+          return const Center(
+            child: Text(
+              'loading',
+              style: TextStyle(color: Colors.white),
+            ),
+          );
         } else if (state is CitiesLoadedState) {
           var cityResult = state.citySearchModel;
 
@@ -201,14 +210,15 @@ class CitySearchBarScreen extends SearchDelegate {
   }
 }
 
-class CityScreen extends StatelessWidget {
+class CitySearchScreen extends StatelessWidget {
   final _searchController = TextEditingController();
 
   final Size deviceSize;
 
   final VoidCallback onBackPress;
 
-  CityScreen({super.key, required this.deviceSize, required this.onBackPress});
+  CitySearchScreen(
+      {super.key, required this.deviceSize, required this.onBackPress});
 
   @override
   Widget build(BuildContext context) {
@@ -247,6 +257,12 @@ class CityScreen extends StatelessWidget {
                           .read<CitySearchBloc>()
                           .add(GetCitiesListEvent(cityName: searchString));
                     }
+
+                    if (_searchController.text.isEmpty) {
+                      context
+                          .read<CitySearchBloc>()
+                          .add(SearchResetToInitEvent());
+                    }
                   },
                   cursorColor: Colors.white,
                   style: const TextStyle(
@@ -263,7 +279,7 @@ class CityScreen extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   _searchController.clear();
                 },
                 child: Container(
@@ -287,7 +303,12 @@ class CityScreen extends StatelessWidget {
         Expanded(child: BlocBuilder<CitySearchBloc, CitySearchState>(
             builder: (context, state) {
           if (state is CitiesLoadingState) {
-            return const Text('loading');
+            return const Center(
+              child: Text(
+                'loading',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
           } else if (state is CitiesLoadedState) {
             var cityResult = state.citySearchModel;
 

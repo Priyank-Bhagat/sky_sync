@@ -116,7 +116,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  showSearch(context: context, delegate: CitySearchBarScreen());
+                  showSearch(context: context, delegate: CitySearchDelegate());
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 50, top: 20),

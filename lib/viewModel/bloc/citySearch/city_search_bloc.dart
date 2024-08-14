@@ -29,6 +29,10 @@ class CitySearchBloc extends Bloc<CitySearchEvent, CitySearchState> {
           rethrow;
         }
       }
+
+      if (event is SearchResetToInitEvent) {
+        emit.call(CitySearchInitialState());
+      }
     });
   }
 }
