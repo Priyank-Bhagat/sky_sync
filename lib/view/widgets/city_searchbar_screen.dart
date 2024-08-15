@@ -104,61 +104,83 @@ class CitySearchDelegate extends SearchDelegate {
         if (state is CitiesLoadingState) {
           return const Center(
             child: Text(
-              'loading',
+              'loading...',
               style: TextStyle(color: Colors.white),
             ),
           );
         } else if (state is CitiesLoadedState) {
           var cityResult = state.citySearchModel;
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-            child: ListView.builder(
-              itemCount: state.citySearchModel.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                            cityName:
-                                state.citySearchModel[index].name.toString(),
+          if (cityResult.isNotEmpty) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+              child: ListView.builder(
+                itemCount: state.citySearchModel.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(
+                              cityName:
+                                  state.citySearchModel[index].name.toString(),
+                            ),
                           ),
+                          (Route route) => false);
+                    },
+                    leading: const Icon(
+                      Icons.location_city,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      cityResult[index].name.toString(),
+                      style: const TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      '${cityResult[index].region.toString()} , ${cityResult[index].country.toString()}',
+                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                    trailing: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Lat : (${cityResult[index].lat.toString()})',
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.white),
                         ),
-                        (Route route) => false);
-                  },
-                  leading: const Icon(
-                    Icons.location_city,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    cityResult[index].name.toString(),
-                    style: const TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    '${cityResult[index].region.toString()} , ${cityResult[index].country.toString()}',
-                    style: const TextStyle(fontSize: 12, color: Colors.white),
-                  ),
-                  trailing: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Lat : (${cityResult[index].lat.toString()})',
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.white),
-                      ),
-                      Text(
-                        'Lon : (${cityResult[index].lon.toString()})',
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                );
-                // ListTile to display each result
-              },
-            ),
-          );
+                        Text(
+                          'Lon : (${cityResult[index].lon.toString()})',
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  );
+                  // ListTile to display each result
+                },
+              ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: double.infinity,
+                ),
+                const Icon(
+                  Icons.heart_broken_rounded,
+                  color: Colors.red,
+                  size: 100,
+                ),
+                Text(
+                  'Nothing to see',
+                  style: GoogleFonts.playfairDisplay(
+                      fontSize: 20, letterSpacing: 5, color: Colors.white),
+                )
+              ],
+            );
+          }
         } else if (state is CitySearchInitialState) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -185,25 +207,7 @@ class CitySearchDelegate extends SearchDelegate {
             ],
           );
         } else {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                width: double.infinity,
-              ),
-              Icon(
-                Icons.heart_broken_rounded,
-                color: Colors.red.shade300,
-                size: 100,
-              ),
-              Text(
-                'Something went wrong',
-                style:
-                    GoogleFonts.dancingScript(fontSize: 30, color: Colors.red),
-              )
-            ],
-          );
+          return Container();
         }
       },
     );
@@ -214,7 +218,7 @@ class CitySearchScreen extends StatefulWidget {
   final Size deviceSize;
   final VoidCallback onBackPress;
 
-  CitySearchScreen(
+  const CitySearchScreen(
       {super.key, required this.deviceSize, required this.onBackPress});
 
   @override
@@ -294,6 +298,9 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
               GestureDetector(
                 onTap: () {
                   _searchController.clear();
+                  if (_searchController.text.isEmpty) {
+                    context.read<CitySearchBloc>().add(SearchResetToInitEvent());
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -318,27 +325,21 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
           if (state is CitiesLoadingState) {
             return const Center(
               child: Text(
-                'loading',
+                'loading...',
                 style: TextStyle(color: Colors.white),
               ),
             );
           } else if (state is CitiesLoadedState) {
             var cityResult = state.citySearchModel;
 
-            return ListView.builder(
-              itemCount: state.citySearchModel.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(
-                      color: Color(0x661d3f46),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                    child: ListTile(
+            if (cityResult.isNotEmpty) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                child: ListView.builder(
+                  itemCount: state.citySearchModel.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
                       onTap: () {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
@@ -378,12 +379,32 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
                           ),
                         ],
                       ),
-                    ),
+                    );
+                    // ListTile to display each result
+                  },
+                ),
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: double.infinity,
                   ),
-                );
-                // ListTile to display each result
-              },
-            );
+                  const Icon(
+                    Icons.heart_broken_rounded,
+                    color: Colors.red,
+                    size: 100,
+                  ),
+                  Text(
+                    'Nothing to see',
+                    style: GoogleFonts.playfairDisplay(
+                        fontSize: 20, letterSpacing: 5, color: Colors.white),
+                  )
+                ],
+              );
+            }
           } else if (state is CitySearchInitialState) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -410,25 +431,7 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
               ],
             );
           } else {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: double.infinity,
-                ),
-                Icon(
-                  Icons.heart_broken_rounded,
-                  color: Colors.red.shade300,
-                  size: 100,
-                ),
-                Text(
-                  'Something went wrong',
-                  style: GoogleFonts.dancingScript(
-                      fontSize: 30, color: Colors.red),
-                )
-              ],
-            );
+            return Container();
           }
         })),
       ],
