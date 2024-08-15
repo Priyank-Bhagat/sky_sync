@@ -101,6 +101,10 @@ class _LoadedScreenState extends State<LoadedScreen> {
     String lastUpdateTime =
         'Last Updated ${formatDate(current.lastUpdated as String, 'dMHm')}';
 
+    String sunrise = forcastDaily[0].astro!.sunrise.toString();
+
+    String sunset = forcastDaily[0].astro!.sunset.toString();
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -328,6 +332,114 @@ class _LoadedScreenState extends State<LoadedScreen> {
                 },
               ),
             ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                  width: deviceSize.width * 0.4,
+                  padding: const EdgeInsets.only(left: 5, bottom: 10),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.wb_sunny_rounded,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Sunrise at',
+                        style: GoogleFonts.merriweather(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )),
+              Container(
+                  width: deviceSize.width * 0.4,
+                  padding: const EdgeInsets.only(left: 5, bottom: 10),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.nights_stay,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Sunset at',
+                        style: GoogleFonts.merriweather(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                height: 120,
+                width: deviceSize.width * 0.4,
+                padding: const EdgeInsets.only(right: 10, top: 10),
+                decoration: const BoxDecoration(
+                  color: Color(0x661d3f46),
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/sunrise.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                      opacity: 0.75),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    sunrise,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+              Container(
+                height: 120,
+                width: deviceSize.width * 0.4,
+                padding: const EdgeInsets.only(right: 10, top: 10),
+                decoration: const BoxDecoration(
+                  color: Color(0x661d3f46),
+                  image: DecorationImage(
+                      image: AssetImage(
+                        'assets/images/sunset.jpg',
+                      ),
+                      fit: BoxFit.cover,
+                      opacity: 0.9),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    sunset,
+                    style: const TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),

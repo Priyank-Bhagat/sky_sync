@@ -141,6 +141,7 @@ class CitySearchDelegate extends SearchDelegate {
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     ),
                     trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
@@ -299,7 +300,9 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
                 onTap: () {
                   _searchController.clear();
                   if (_searchController.text.isEmpty) {
-                    context.read<CitySearchBloc>().add(SearchResetToInitEvent());
+                    context
+                        .read<CitySearchBloc>()
+                        .add(SearchResetToInitEvent());
                   }
                 },
                 child: Container(
@@ -339,45 +342,54 @@ class _CitySearchScreenState extends State<CitySearchScreen> {
                 child: ListView.builder(
                   itemCount: state.citySearchModel.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                cityName: state.citySearchModel[index].name
-                                    .toString(),
+                    return Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: Color(0x661d3f46),
+                            borderRadius: BorderRadius.all(Radius.circular(15))),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(
+                                    cityName: state.citySearchModel[index].name
+                                        .toString(),
+                                  ),
+                                ),
+                                (Route route) => false);
+                          },
+                          leading: const Icon(
+                            Icons.location_city,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            cityResult[index].name.toString(),
+                            style:
+                                const TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            '${cityResult[index].region.toString()} , ${cityResult[index].country.toString()}',
+                            style:
+                                const TextStyle(fontSize: 12, color: Colors.white),
+                          ),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Lat : (${cityResult[index].lat.toString()})',
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.white),
                               ),
-                            ),
-                            (Route route) => false);
-                      },
-                      leading: const Icon(
-                        Icons.location_city,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        cityResult[index].name.toString(),
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                      subtitle: Text(
-                        '${cityResult[index].region.toString()} , ${cityResult[index].country.toString()}',
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.white),
-                      ),
-                      trailing: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Lat : (${cityResult[index].lat.toString()})',
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.white),
+                              Text(
+                                'Lon : (${cityResult[index].lon.toString()})',
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.white),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'Lon : (${cityResult[index].lon.toString()})',
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.white),
-                          ),
-                        ],
+                        ),
                       ),
                     );
                     // ListTile to display each result
