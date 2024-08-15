@@ -210,15 +210,21 @@ class CitySearchDelegate extends SearchDelegate {
   }
 }
 
-class CitySearchScreen extends StatelessWidget {
-  final _searchController = TextEditingController();
-
+class CitySearchScreen extends StatefulWidget {
   final Size deviceSize;
-
   final VoidCallback onBackPress;
 
   CitySearchScreen(
       {super.key, required this.deviceSize, required this.onBackPress});
+
+  @override
+  State<CitySearchScreen> createState() => _CitySearchScreenState();
+}
+
+class _CitySearchScreenState extends State<CitySearchScreen> {
+  final _searchController = TextEditingController();
+
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +236,7 @@ class CitySearchScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: onBackPress,
+                onTap: widget.onBackPress,
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
@@ -247,10 +253,17 @@ class CitySearchScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: deviceSize.width * 0.5,
+                width: widget.deviceSize.width * 0.5,
                 child: TextField(
                   controller: _searchController,
+                  focusNode: _focusNode,
                   autofocus: true,
+                  onSubmitted: (searchString) {
+                    _focusNode.unfocus();
+                  },
+                  onTapOutside: (pointer) {
+                    _focusNode.unfocus();
+                  },
                   onChanged: (searchString) {
                     if (_searchController.text.length >= 3) {
                       context
@@ -381,7 +394,7 @@ class CitySearchScreen extends StatelessWidget {
                 ),
                 Image.asset(
                   'assets/images/citys.png',
-                  width: deviceSize.width - 40,
+                  width: widget.deviceSize.width - 40,
                   fit: BoxFit.fitWidth,
                 ),
                 Text(
