@@ -389,7 +389,7 @@ class _LoadedScreenState extends State<LoadedScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                height: 120,
+                height: 100,
                 width: deviceSize.width * 0.4,
                 padding: const EdgeInsets.only(right: 10, top: 10),
                 decoration: const BoxDecoration(
@@ -413,7 +413,7 @@ class _LoadedScreenState extends State<LoadedScreen> {
                 ),
               ),
               Container(
-                height: 120,
+                height: 100,
                 width: deviceSize.width * 0.4,
                 padding: const EdgeInsets.only(right: 10, top: 10),
                 decoration: const BoxDecoration(
