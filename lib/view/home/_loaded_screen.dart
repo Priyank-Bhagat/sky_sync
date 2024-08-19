@@ -19,8 +19,15 @@ class LoadedScreen extends StatefulWidget {
 
 class _LoadedScreenState extends State<LoadedScreen> {
   final _pageController = PageController();
-
+  final _scrollController = ScrollController();
   int _currentPage = 0;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   void initState() {
@@ -104,6 +111,12 @@ class _LoadedScreenState extends State<LoadedScreen> {
     String sunrise = forcastDaily[0].astro!.sunrise.toString();
 
     String sunset = forcastDaily[0].astro!.sunset.toString();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        scrollToTimestamp(_scrollController);
+      }
+    });
 
     return SingleChildScrollView(
       child: Column(
@@ -210,6 +223,7 @@ class _LoadedScreenState extends State<LoadedScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
+                controller: _scrollController,
                 itemCount: forcastHourly.length,
                 itemBuilder: (BuildContext context, int index) {
                   String hourlyTime = forcastHourly[index].time!.substring(11);

@@ -158,6 +158,44 @@ WeatherType getWeatherCondition(int iconCode, int mode) {
   }
 }
 
+const List<String> hoursList = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23'
+];
+
+void scrollToTimestamp(ScrollController scrollController) {
+  var now = DateTime.now();
+  final timestamp = DateFormat('HH').format(now);
+  final index = hoursList.indexOf(timestamp);
+
+  if (index != -1) {
+    scrollController.animateTo(index * 118.0,
+        duration: const Duration(milliseconds: 1500), curve: Curves.easeInOut);
+  }
+}
+
 String formatDate(String dateTimeStr, String type) {
   if (type == 'EdM') {
     DateTime dateTime = DateTime.parse(dateTimeStr);
