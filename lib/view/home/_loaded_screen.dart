@@ -114,7 +114,7 @@ class _LoadedScreenState extends State<LoadedScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
-        scrollToTimestamp(_scrollController);
+        scrollToTimestamp(current.lastUpdated as String, _scrollController);
       }
     });
 

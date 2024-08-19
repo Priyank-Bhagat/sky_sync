@@ -185,9 +185,9 @@ const List<String> hoursList = [
   '23'
 ];
 
-void scrollToTimestamp(ScrollController scrollController) {
-  var now = DateTime.now();
-  final timestamp = DateFormat('HH').format(now);
+void scrollToTimestamp(String dateTimeStr,ScrollController scrollController) {
+  DateTime dateTime = DateTime.parse(dateTimeStr);
+  final timestamp = DateFormat('HH').format(dateTime);
   final index = hoursList.indexOf(timestamp);
 
   if (index != -1) {
