@@ -10,10 +10,24 @@ Stay updated with weather info with sky_sync app! 🌦️ Dynamic backgrounds re
 You can search your city manually or let the app find out your location with location permission. 
 <p> 
   <img width="200" src="https://github.com/user-attachments/assets/6e36d51e-0610-4995-8373-279a4898caf6" alt="something was here🤔">
-    <img width="200" src="https://github.com/Priyank-Bhagat/ask_ai/assets/115228605/da36a823-65e7-416f-9314-448450b9be1f" alt="something was here🤔">
-        <img width="200" src="https://github.com/Priyank-Bhagat/ask_ai/assets/115228605/8293454a-3460-4674-8ff3-7785d7bb4529" alt="something was here🤔">
-    <img width="200" src="https://github.com/Priyank-Bhagat/ask_ai/assets/115228605/6c192dfd-b747-4ed8-b1d8-e51955e13e1c" alt="something was here🤔">
-    <img width="200" src="https://github.com/Priyank-Bhagat/ask_ai/assets/115228605/70abbef3-2954-47ba-ae43-d9c9e48954b8" alt="something was here🤔">
+    <img width="200" src="https://github.com/user-attachments/assets/c93f2b6b-3e6d-4695-9fb1-fe99e3e03593" alt="something was here🤔">
+</p>
+
+Sky_Sync app has a dynamic background that will adapt automatically according to the current location's weather conditions.
+<p> 
+    
+  <img width="200" src="https://github.com/user-attachments/assets/517cc607-0410-46b4-b0ca-7222e5ae615d" alt="something was here🤔">
+    <img width="200" src="https://github.com/user-attachments/assets/7808deb4-444e-4321-8554-b383d3fe8138" alt="something was here🤔">
+     <img width="200" src="https://github.com/user-attachments/assets/cffe6a60-7aa9-4c6d-9b2e-e3da8c9e5d92" alt="something was here🤔">
+    <img width="200" src="https://github.com/user-attachments/assets/4086fb28-57f2-4760-a8e4-b37310e07908" alt="something was here🤔">
+</p>
+
+If something went wrong, like no internet connection, location fault, or any other unexpected condition, the broken screen will be shown.
+
+<p>
+    
+<img width="200" src="https://github.com/user-attachments/assets/5546c486-77fb-4807-b0e7-df80b1df734f" alt="something was here🤔">
+
 </p>
 
 ## Download
