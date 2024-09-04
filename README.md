@@ -7,10 +7,11 @@
 Stay updated with weather info with sky_sync app! 🌦️ Dynamic backgrounds reflect current conditions, while real-time forecasts, alerts, and interactive radar keep you prepared. 🌈✨ Experience weather in a whole new way!
 
 ## Demo
-You can search your city manually or let the app find out your location with location permission. 
+You can search your city manually or let the app find out your location with location permission.
 <p> 
-  <img width="200" src="https://github.com/user-attachments/assets/6e36d51e-0610-4995-8373-279a4898caf6" alt="something was here🤔">
-    <img width="200" src="https://github.com/user-attachments/assets/c93f2b6b-3e6d-4695-9fb1-fe99e3e03593" alt="something was here🤔">
+  <img width="200" src="https://github.com/user-attachments/assets/754addb0-8525-4d0c-936f-33962040466b" alt="something was here🤔">
+   <img width="200" src="https://github.com/user-attachments/assets/6e36d51e-0610-4995-8373-279a4898caf6" alt="something was here🤔">
+   <img width="200" src="https://github.com/user-attachments/assets/c93f2b6b-3e6d-4695-9fb1-fe99e3e03593" alt="something was here🤔">
 </p>
 
 Sky_Sync app has a dynamic background that will adapt automatically according to the current location's weather conditions.
