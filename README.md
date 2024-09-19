@@ -35,7 +35,7 @@ If something went wrong, like no internet connection, location fault, or any oth
 
 Wanna find out the current weather condition?,
 <br>
-👉[Download ](https://mega.nz/file/uNFylbBI#FGNyZp1axjkVSnrqcML2LzxoMFOOSHRQ0DGaWnDJTls)👈The Sky_Sync App.
+👉[Download ](https://drive.google.com/file/d/1Yd2sdDRWbDhIsYNb_hXuh1fhqcaCB3ap/view?usp=sharing)👈The Sky_Sync App.
 
 ## Getting Started
 
