@@ -26,7 +26,7 @@ Sky_Sync app has a dynamic background that will adapt automatically according to
 If something went wrong, like no internet connection, location fault, or any other unexpected condition, the broken screen will be shown.
 
 <p>
-    
+     
 <img width="200" src="https://github.com/user-attachments/assets/5546c486-77fb-4807-b0e7-df80b1df734f" alt="something was here🤔">
 
 </p>
